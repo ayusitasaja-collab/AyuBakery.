@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayu Bakery - Premium Artisan Bakery</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Google Outfit & Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: 'Outfit', sans-serif; }
+    .font-serif-custom { font-family: 'Playfair Display', serif; }
+    .glass-effect { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+    .gold-gradient { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); }
+    .gold-text-gradient { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  </style>
+</head>
+<body class="bg-amber-50/40 text-stone-800 min-h-screen relative flex flex-col justify-between">
+
+  <!-- ==================== MODAL LOGIN PELANGGAN ==================== -->
+  <div id="modal-login-user" class="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl border border-amber-100 max-w-md w-full p-8 text-center relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-200/50 rounded-full blur-2xl"></div>
+      
+      <div class="w-16 h-16 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner border border-amber-200">
+        🥐
+      </div>
+      <h2 class="text-2xl font-bold font-serif-custom text-stone-900">Selamat Datang di Ayu Bakery</h2>
+      <p class="text-xs text-stone-500 mt-1 mb-6">Silakan masuk ke akun Anda terlebih dahulu untuk mulai membeli roti fresh kami.</p>
+
+      <form onsubmit="handleLoginUser(event)" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Username / Nama Pelanggan</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5"></i>
+            <input type="text" id="user-login-username" required placeholder="Masukkan nama Anda" class="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Nomor Telepon / WhatsApp</label>
+          <div class="relative">
+            <i data-lucide="phone" class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5"></i>
+            <input type="tel" id="user-login-phone" required placeholder="Contoh: 081234567890" class="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5"></i>
+            <input type="password" id="user-login-password" required placeholder="••••••••" class="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-50">
+          </div>
+        </div>
+
+        <button type="submit" class="w-full gold-gradient hover:opacity-95 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2 mt-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Masuk & Mulai Belanja
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL LOGIN OWNER ==================== -->
+  <div id="modal-login-owner" class="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-stone-900 text-white rounded-3xl shadow-2xl border border-amber-500/30 max-w-sm w-full p-6 text-center relative">
+      <button onclick="tutupModalOwnerLogin()" class="absolute top-4 right-4 text-stone-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-amber-500/20">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      </div>
+      <h3 class="text-xl font-bold font-serif-custom text-amber-400">Verifikasi Owner Ayu Bakery</h3>
+      <p class="text-xs text-stone-400 mt-1 mb-5">Area khusus Pemilik Toko. Masukkan kode sandi otorisasi.</p>
+
+      <form onsubmit="handleLoginOwner(event)" class="space-y-4 text-left">
+        <div>
+          <label class="block text-xs font-semibold text-stone-300 mb-1">Password Akses Owner</label>
+          <div class="relative">
+            <i data-lucide="key-round" class="w-4 h-4 text-stone-500 absolute left-3.5 top-3.5"></i>
+            <input type="password" id="owner-password-input" required placeholder="Sandi: owner123" class="w-full text-sm pl-10 pr-4 py-2.5 rounded-xl border border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-stone-800 text-white">
+          </div>
+          <p id="owner-error-msg" class="text-[11px] text-rose-400 mt-1.5 hidden">❌ Password salah! Silakan coba lagi.</p>
+        </div>
+
+        <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-stone-950 font-bold py-2.5 rounded-xl text-sm transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+          Masuk Dashboard
+        </button>
+      </form>
+      <p class="text-[10px] text-stone-500 mt-3">Password Default Owner: <strong class="text-amber-400">owner123</strong></p>
+    </div>
+  </div>
+
+  <!-- ==================== HEADER MAIN NAV ==================== -->
+  <header class="glass-effect sticky top-0 z-40 border-b border-amber-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 gold-gradient text-white rounded-2xl flex items-center justify-center shadow-md text-xl">
+          🍞
+        </div>
+        <div>
+          <h1 class="text-xl font-extrabold font-serif-custom tracking-wide text-stone-900 leading-none">AYU BAKERY</h1>
+          <p class="text-[10px] text-amber-700 font-semibold tracking-widest uppercase mt-0.5">Artisan Fresh Baked Daily</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Akun Pelanggan Aktif -->
+        <div id="user-badge" class="hidden sm:flex items-center gap-2 bg-amber-100/70 border border-amber-200/80 px-3 py-1.5 rounded-xl text-xs font-semibold text-amber-900">
+          <i data-lucide="user-check" class="w-3.5 h-3.5 text-amber-700"></i>
+          <span id="active-username-text">User</span>
+        </div>
+
+        <!-- Tombol Owner -->
+        <button onclick="bukaModalOwnerLogin()" class="bg-stone-900 hover:bg-stone-800 text-amber-400 border border-amber-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+          <span>Dashboard Owner</span>
+        </button>
+
+        <!-- Tombol Keranjang Floating Nav -->
+        <a href="#keranjang-section" class="gold-gradient text-white px-3.5 py-2 rounded-xl font-bold text-xs sm:text-sm transition flex items-center gap-2 shadow-md hover:opacity-95">
+          <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+          <span>(<span id="cart-count">0</span>)</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT TOKO ==================== -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-12 flex-1">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      
+      <!-- Katalog Produk -->
+      <section class="lg:col-span-2 space-y-6">
+        <div class="bg-white p-6 rounded-3xl border border-amber-100 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h2 class="text-2xl font-bold font-serif-custom text-stone-900 flex items-center gap-2">
+              Menu Roti Premium Fresh
+            </h2>
+            <p class="text-xs text-stone-500 mt-1">Dibuat fresh setiap pagi dengan bahan organik pilihan.</p>
+          </div>
+          <span class="text-xs font-bold bg-amber-100 text-amber-900 px-3.5 py-1.5 rounded-full border border-amber-200 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Stok & Harga Real-Time
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5" id="produk-list">
+          <!-- Render via JS -->
+        </div>
+      </section>
+
+      <!-- Keranjang Kasir & Pembayaran -->
+      <section id="keranjang-section" class="bg-white p-6 rounded-3xl shadow-xl border border-amber-100 sticky top-20">
+        <div class="flex justify-between items-center mb-4 border-b pb-3">
+          <h2 class="text-lg font-bold font-serif-custom text-stone-900 flex items-center gap-2">
+            <i data-lucide="shopping-cart" class="w-5 h-5 text-amber-600"></i>
+            Keranjang Belanja
+          </h2>
+          <button onclick="kosongkanKeranjang()" class="text-xs text-rose-600 hover:text-rose-800 font-medium">Kosongkan</button>
+        </div>
+
+        <!-- List Items -->
+        <div id="cart-items" class="space-y-3 mb-4 max-h-56 overflow-y-auto pr-1">
+          <div class="text-center py-8 text-stone-400">
+            <p class="text-sm italic">Keranjang masih kosong</p>
+          </div>
+        </div>
+
+        <!-- Rincian Total -->
+        <div class="border-t border-dashed border-stone-200 pt-3 mb-5 space-y-1.5">
+          <div class="flex justify-between text-xs text-stone-500">
+            <span>Total Item:</span>
+            <span id="cart-total-qty" class="font-semibold text-stone-700">0 pcs</span>
+          </div>
+          <div class="flex justify-between font-extrabold text-xl text-stone-900 pt-1 border-t border-stone-100">
+            <span>Total Bayar:</span>
+            <span id="total-price" class="gold-text-gradient">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Form Pembayaran Multi-Method -->
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Nama Pemesan</label>
+            <input type="text" id="customer-name" readonly class="w-full text-sm p-2.5 border border-stone-200 rounded-xl bg-stone-100 text-stone-600 font-medium">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Pilih Metode Pembayaran</label>
+            <div class="grid grid-cols-3 gap-2" id="payment-methods">
+              <button type="button" onclick="pilihMetode('QRIS')" id="btn-qris" class="payment-btn flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs font-semibold transition gap-1 bg-amber-50 border-amber-500 text-amber-900 shadow-sm">
+                <i data-lucide="qr-code" class="w-4 h-4"></i> QRIS
+              </button>
+              <button type="button" onclick="pilihMetode('Transfer')" id="btn-transfer" class="payment-btn flex flex-col items-center justify-center p-2.5 rounded-xl border border-stone-200 text-xs font-semibold transition gap-1 text-stone-600">
+                <i data-lucide="landmark" class="w-4 h-4"></i> Transfer
+              </button>
+              <button type="button" onclick="pilihMetode('Cash')" id="btn-cash" class="payment-btn flex flex-col items-center justify-center p-2.5 rounded-xl border border-stone-200 text-xs font-semibold transition gap-1 text-stone-600">
+                <i data-lucide="banknote" class="w-4 h-4"></i> Cash
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Payment Info & QRIS Barcode -->
+          <div id="payment-info" class="p-3.5 bg-amber-50/80 rounded-2xl text-xs text-amber-950 border border-amber-200 text-center">
+            <p class="font-bold mb-1">📱 Scan Kode QRIS Ayu Bakery:</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=AYU_BAKERY_OFFICIAL_QRIS" alt="QRIS Barcode" class="mx-auto rounded-xl border border-amber-300 p-1 bg-white my-2 shadow-sm">
+            <p class="text-[10px] text-amber-800">Mendukung Gopay, ShopeePay, OVO, Dana & Seluruh m-Banking.</p>
+          </div>
+
+          <!-- Tombol Done -->
+          <button onclick="prosesPembayaran()" class="w-full gold-gradient hover:opacity-95 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-lg shadow-amber-600/20 flex items-center justify-center gap-2">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+            DONE / Selesaikan Transaksi
+          </button>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- ==================== MODAL DASHBOARD OWNER ==================== -->
+  <div id="modal-dashboard-owner" class="fixed inset-0 z-50 bg-stone-900/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl border border-stone-200 max-w-5xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto relative text-stone-800">
+      <button onclick="tutupDashboardOwner()" class="absolute top-6 right-6 text-stone-400 hover:text-stone-800">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <div class="border-b border-stone-200 pb-4 mb-4">
+        <span class="text-[10px] font-bold tracking-widest text-amber-700 uppercase bg-amber-100 px-3 py-1 rounded-full">Otorisasi Owner Aktif</span>
+        <h2 class="text-2xl font-bold font-serif-custom text-stone-900 mt-2 flex items-center gap-2">
+          <i data-lucide="bar-chart-3" class="w-6 h-6 text-amber-600"></i>
+          Dashboard Owner Ayu Bakery
+        </h2>
+        <p class="text-xs text-stone-500 mt-0.5">Kelola menu baru, stok/harga, upload gambar dari file hp/laptop, dan histori pembeli.</p>
+      </div>
+
+      <!-- Tab Navigation Owner -->
+      <div class="flex border-b border-stone-200 mb-6 gap-4 overflow-x-auto">
+        <button id="tab-hari-ini" onclick="switchOwnerTab('hari-ini')" class="pb-2.5 text-xs font-bold border-b-2 border-amber-600 text-amber-900 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="calendar" class="w-4 h-4"></i> Penjualan Hari Ini
+        </button>
+        <button id="tab-tambah-menu" onclick="switchOwnerTab('tambah-menu')" class="pb-2.5 text-xs font-bold border-b-2 border-transparent text-stone-400 hover:text-stone-700 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-600"></i> Tambah Menu Baru
+        </button>
+        <button id="tab-stok" onclick="switchOwnerTab('stok')" class="pb-2.5 text-xs font-bold border-b-2 border-transparent text-stone-400 hover:text-stone-700 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="boxes" class="w-4 h-4"></i> Kelola Stok & Harga
+        </button>
+        <button id="tab-kemarin" onclick="switchOwnerTab('kemarin')" class="pb-2.5 text-xs font-bold border-b-2 border-transparent text-stone-400 hover:text-stone-700 flex items-center gap-1.5 whitespace-nowrap">
+          <i data-lucide="history" class="w-4 h-4"></i> Histori Pembeli Kemarin
+        </button>
+      </div>
+
+      <!-- SECTION 1: PENJUALAN HARI INI -->
+      <div id="section-hari-ini">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200">
+            <p class="text-xs text-amber-800 font-medium">Terjual Hari Ini</p>
+            <p class="text-2xl font-black text-amber-950 mt-1" id="stat-total-pcs">0 pcs</p>
+          </div>
+
+          <div class="bg-stone-100 p-4 rounded-2xl border border-stone-200">
+            <p class="text-xs text-stone-600 font-medium">Omset Hari Ini</p>
+            <p class="text-2xl font-black text-stone-900 mt-1" id="stat-total-omset">Rp 0</p>
+          </div>
+
+          <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+            <p class="text-xs text-emerald-800 font-medium">Profit Bersih</p>
+            <p class="text-2xl font-black text-emerald-950 mt-1" id="stat-total-untung">Rp 0</p>
+          </div>
+
+          <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200">
+            <p class="text-xs text-rose-800 font-medium">Status Evaluasi</p>
+            <p class="text-xs font-bold text-rose-900 mt-2 leading-tight" id="stat-status-rugi">Belum Ada Transaksi</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-stone-200 mb-6">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-stone-100 text-stone-700 font-bold uppercase border-b border-stone-200">
+                <th class="p-3">Jam</th>
+                <th class="p-3">Nama Pembeli</th>
+                <th class="p-3">No. Telepon</th>
+                <th class="p-3">Roti Terjual (Qty)</th>
+                <th class="p-3">Metode</th>
+                <th class="p-3">Total Belanja</th>
+                <th class="p-3">Profit Bersih</th>
+              </tr>
+            </thead>
+            <tbody id="laporan-tbody" class="divide-y divide-stone-100 bg-white">
+              <tr>
+                <td colspan="7" class="text-center py-8 text-stone-400 italic">Belum ada transaksi hari ini.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 2: TAMBAH MENU ROTI BARU (UPLOAD FILE DARI DEVICE) -->
+      <div id="section-tambah-menu" class="hidden space-y-4">
+        <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+          <h4 class="font-bold text-emerald-900 text-xs flex items-center gap-1.5">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Tambah Variasi Roti Baru
+          </h4>
+          <p class="text-[11px] text-emerald-800 mt-0.5">Upload gambar roti langsung dari penyimpanan galeri HP / Laptop Anda.</p>
+        </div>
+
+        <form onsubmit="handleTambahMenuBaru(event)" class="bg-stone-50 p-5 rounded-2xl border border-stone-200 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Nama Roti Baru</label>
+              <input type="text" id="new-nama-roti" required placeholder="Contoh: Roti Croissant Keju" class="w-full text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Upload Gambar Roti (File Galeri/Device)</label>
+              <input type="file" id="new-file-roti" accept="image/*" class="w-full text-xs p-2 rounded-xl border border-stone-300 bg-white text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Harga Jual Pelanggan (Rp)</label>
+              <input type="number" id="new-harga-roti" required placeholder="Contoh: 15000" class="w-full text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Harga Modal / HPP (Rp)</label>
+              <input type="number" id="new-hpp-roti" required placeholder="Contoh: 9000" class="w-full text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Stok Awal Hari Ini (pcs)</label>
+              <input type="number" id="new-stok-roti" required placeholder="Contoh: 20" class="w-full text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Deskripsi Singkat Roti</label>
+              <input type="text" id="new-desc-roti" required placeholder="Contoh: Croissant renyah berlapis butter premium." class="w-full text-xs p-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white">
+            </div>
+          </div>
+
+          <button type="submit" class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 px-6 rounded-xl text-xs transition shadow-md flex items-center gap-2 ml-auto">
+            <i data-lucide="check" class="w-4 h-4"></i> Publis Roti Baru ke Beranda
+          </button>
+        </form>
+      </div>
+
+      <!-- SECTION 3: KELOLA STOK, HARGA & GANTI GAMBAR DARI DEVICE -->
+      <div id="section-stok" class="hidden space-y-4">
+        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-amber-900 text-xs">🏷️ Pengaturan Harga, Stok & Gambar Roti</h4>
+            <p class="text-[11px] text-amber-700">Ubah harga jual, isi stok harian, dan ganti foto roti dari file hp/laptop.</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-stone-200">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-stone-800 text-stone-200 font-bold uppercase">
+                <th class="p-3">Produk & Gambar</th>
+                <th class="p-3">Ganti Foto (File)</th>
+                <th class="p-3">Modal (HPP)</th>
+                <th class="p-3">Harga Jual</th>
+                <th class="p-3">Stok</th>
+                <th class="p-3 text-center">Aksi / Update</th>
+              </tr>
+            </thead>
+            <tbody id="stok-tbody" class="divide-y divide-stone-100 bg-white">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECTION 4: HISTORI PEMBELI KEMARIN -->
+      <div id="section-kemarin" class="hidden">
+        <div class="bg-amber-50/50 p-4 rounded-2xl border border-amber-200/60 mb-4">
+          <h4 class="font-bold text-stone-800 text-xs">📜 Arsip Histori Pembeli Kemarin-Kemarin</h4>
+          <p class="text-[11px] text-stone-500">Rekap riwayat pembeli lengkap dengan kontak nomor telepon dan total nominal belanja.</p>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-stone-200 mb-6">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-stone-800 text-stone-200 font-bold uppercase">
+                <th class="p-3">Tanggal</th>
+                <th class="p-3">Nama Pembeli</th>
+                <th class="p-3">No. Telepon</th>
+                <th class="p-3">Roti Dibeli</th>
+                <th class="p-3">Total Pcs</th>
+                <th class="p-3">Total Belanja</th>
+                <th class="p-3">Profit</th>
+              </tr>
+            </thead>
+            <tbody id="riwayat-kemarin-tbody" class="divide-y divide-stone-100 bg-white">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-amber-50/70 p-4 rounded-2xl border border-amber-200 text-xs text-amber-950 mt-4">
+        <p class="font-bold">💡 Catatan Pengelolaan Toko:</p>
+        <p>• Mengunggah foto baru dari device akan secara langsung memperbarui tampilan di galeri toko pembeli.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL NOTA PEMBAYARAN DIGITAL ==================== -->
+  <div id="nota-modal" class="fixed inset-0 bg-stone-900/80 backdrop-blur-md hidden items-center justify-center p-4 z-50">
+    <div class="bg-white p-6 rounded-3xl shadow-2xl max-w-sm w-full font-mono text-xs relative text-stone-800 border border-stone-200">
+      
+      <div class="text-center border-b border-dashed border-stone-300 pb-4 mb-4">
+        <div class="text-2xl mb-1">🍞</div>
+        <h3 class="font-black text-base tracking-wider font-serif-custom text-stone-900">AYU BAKERY</h3>
+        <p class="text-[10px] text-stone-500">Jl. Suka Roti No. 12, Malang</p>
+        <p class="text-[10px] text-stone-400 mt-1" id="nota-tanggal">-</p>
+      </div>
+
+      <div class="mb-4 space-y-1">
+        <p><strong>Pelanggan :</strong> <span id="nota-nama">-</span></p>
+        <p><strong>No. Telp   :</strong> <span id="nota-phone">-</span></p>
+        <p><strong>Metode    :</strong> <span id="nota-metode" class="font-bold text-amber-700">-</span></p>
+        <p><strong>Status    :</strong> <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded font-sans font-bold">LUNAS</span></p>
+      </div>
+
+      <div class="border-t border-b border-dashed border-stone-300 py-3 mb-4 space-y-2" id="nota-items"></div>
+
+      <div class="flex justify-between font-extrabold text-sm mb-6 border-b pb-2">
+        <span>TOTAL:</span>
+        <span id="nota-total" class="text-stone-900">Rp 0</span>
+      </div>
+
+      <div class="text-center text-[10px] text-stone-400 mb-6 italic leading-tight">
+        "Terima kasih telah berbelanja di Ayu Bakery! Rotinya selalu fresh & lezat."
+      </div>
+
+      <div class="space-y-2 font-sans">
+        <button onclick="window.print()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+          <i data-lucide="printer" class="w-4 h-4"></i> Cetak / Print Nota
+        </button>
+        <button onclick="tutupNota()" class="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-2.5 rounded-xl transition">
+          Selesai & Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center text-xs text-stone-400 py-6 border-t border-stone-200/60 mt-10">
+    <p>© 2026 Ayu Bakery UMKM. Crafted for Luxury & Modern Experience.</p>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // MASTER DATA ROTI
+    let produkList = [
+      { 
+        id: 1, 
+        nama: 'Roti Coklat Lumer', 
+        harga: 8000, 
+        hpp: 5000, 
+        stok: 15, 
+        gambar: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80', 
+        desc: 'Isian coklat melimpah meleleh yang terbuat dari coklat impor premium.' 
+      },
+      { 
+        id: 2, 
+        nama: 'Roti Sosis Keju Mozzarella', 
+        harga: 12000, 
+        hpp: 7500, 
+        stok: 10, 
+        gambar: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80', 
+        desc: 'Sosis sapi renyah dipadu dengan lelehan keju mozzarella istimewa.' 
+      },
+      { 
+        id: 3, 
+        nama: 'Cupcake Vanilla Crown', 
+        harga: 15000, 
+        hpp: 9000, 
+        stok: 8, 
+        gambar: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80', 
+        desc: 'Cupcake halus super lembut dengan topping butter krim vanilla spesial.' 
+      },
+      { 
+        id: 4, 
+        nama: 'Roti Tawar Wheat Whole', 
+        harga: 18000, 
+        hpp: 11000, 
+        stok: 5, 
+        gambar: 'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?auto=format&fit=crop&w=600&q=80', 
+        desc: 'Roti gandum utuh serat tinggi, sangat sehat & kaya akan nutrisi.' 
+      }
+    ];
+
+    let currentUser = null;
+    let currentUserPhone = null;
+    let keranjang = [];
+    let riwayatHariIni = [];
+    
+    let riwayatKemarin = [
+      { tanggal: '17/08/2026', nama: 'Budi Santoso', phone: '081298765432', detail: 'Roti Coklat Lumer (2 pcs), Roti Tawar (1 pcs)', totalPcs: 3, omset: 34000, profit: 11000 },
+      { tanggal: '16/08/2026', nama: 'Siti Rahma', phone: '085711223344', detail: 'Cupcake Vanilla Crown (4 pcs)', totalPcs: 4, omset: 60000, profit: 24000 },
+      { tanggal: '15/08/2026', nama: 'Andi Pratama', phone: '082155667788', detail: 'Roti Sosis Keju (1 pcs)', totalPcs: 1, omset: 12000, profit: 4500 }
+    ];
+
+    let metodePembayaranTerpilih = 'QRIS';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProduk();
+      lucide.createIcons();
+    });
+
+    // Login User
+    function handleLoginUser(e) {
+      e.preventDefault();
+      const usernameInput = document.getElementById('user-login-username').value.trim();
+      const phoneInput = document.getElementById('user-login-phone').value.trim();
+      if (!usernameInput || !phoneInput) return;
+
+      currentUser = usernameInput;
+      currentUserPhone = phoneInput;
+
+      document.getElementById('active-username-text').innerText = currentUser;
+      document.getElementById('customer-name').value = `${currentUser} (${currentUserPhone})`;
+      document.getElementById('user-badge').classList.remove('hidden');
+      document.getElementById('modal-login-user').classList.add('hidden');
+    }
+
+    // Modal Owner Access
+    function bukaModalOwnerLogin() {
+      document.getElementById('modal-login-owner').classList.remove('hidden');
+      document.getElementById('modal-login-owner').classList.add('flex');
+    }
+
+    function tutupModalOwnerLogin() {
+      document.getElementById('modal-login-owner').classList.add('hidden');
+      document.getElementById('modal-login-owner').classList.remove('flex');
+      document.getElementById('owner-error-msg').classList.add('hidden');
+    }
+
+    function handleLoginOwner(e) {
+      e.preventDefault();
+      const pass = document.getElementById('owner-password-input').value;
+
+      if (pass === 'owner123') { 
+        tutupModalOwnerLogin();
+        document.getElementById('owner-password-input').value = '';
+        bukaDashboardOwner();
+      } else {
+        document.getElementById('owner-error-msg').classList.remove('hidden');
+      }
+    }
+
+    function bukaDashboardOwner() {
+      updateLaporanHariIni();
+      renderTabelStokOwner();
+      renderRiwayatKemarin();
+      document.getElementById('modal-dashboard-owner').classList.remove('hidden');
+      document.getElementById('modal-dashboard-owner').classList.add('flex');
+    }
+
+    function tutupDashboardOwner() {
+      document.getElementById('modal-dashboard-owner').classList.add('hidden');
+      document.getElementById('modal-dashboard-owner').classList.remove('flex');
+    }
+
+    // Switch Tab Owner
+    function switchOwnerTab(tab) {
+      const btnHariIni = document.getElementById('tab-hari-ini');
+      const btnTambahMenu = document.getElementById('tab-tambah-menu');
+      const btnStok = document.getElementById('tab-stok');
+      const btnKemarin = document.getElementById('tab-kemarin');
+
+      const secHariIni = document.getElementById('section-hari-ini');
+      const secTambahMenu = document.getElementById('section-tambah-menu');
+      const secStok = document.getElementById('section-stok');
+      const secKemarin = document.getElementById('section-kemarin');
+
+      [btnHariIni, btnTambahMenu, btnStok, btnKemarin].forEach(b => b.className = "pb-2.5 text-xs font-bold border-b-2 border-transparent text-stone-400 hover:text-stone-700 flex items-center gap-1.5 whitespace-nowrap");
+      [secHariIni, secTambahMenu, secStok, secKemarin].forEach(s => s.classList.add('hidden'));
+
+      if (tab === 'hari-ini') {
+        btnHariIni.className = "pb-2.5 text-xs font-bold border-b-2 border-amber-600 text-amber-900 flex items-center gap-1.5 whitespace-nowrap";
+        secHariIni.classList.remove('hidden');
+      } else if (tab === 'tambah-menu') {
+        btnTambahMenu.className = "pb-2.5 text-xs font-bold border-b-2 border-amber-600 text-amber-900 flex items-center gap-1.5 whitespace-nowrap";
+        secTambahMenu.classList.remove('hidden');
+      } else if (tab === 'stok') {
+        btnStok.className = "pb-2.5 text-xs font-bold border-b-2 border-amber-600 text-amber-900 flex items-center gap-1.5 whitespace-nowrap";
+        secStok.classList.remove('hidden');
+      } else {
+        btnKemarin.className = "pb-2.5 text-xs font-bold border-b-2 border-amber-600 text-amber-900 flex items-center gap-1.5 whitespace-nowrap";
+        secKemarin.classList.remove('hidden');
+      }
+    }
+
+    // PROSES TAMBAH ROTI BARU DENGAN UPLOAD FILE GALAERY/DEVICE
+    function handleTambahMenuBaru(e) {
+      e.preventDefault();
+
+      const nama = document.getElementById('new-nama-roti').value.trim();
+      const fileInput = document.getElementById('new-file-roti');
+      const harga = parseInt(document.getElementById('new-harga-roti').value);
+      const hpp = parseInt(document.getElementById('new-hpp-roti').value);
+      const stok = parseInt(document.getElementById('new-stok-roti').value);
+      const desc = document.getElementById('new-desc-roti').value.trim();
+
+      let fotoUrl = 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80';
+
+      // Mengambil file dari device lokal
+      if (fileInput.files && fileInput.files[0]) {
+        fotoUrl = URL.createObjectURL(fileInput.files[0]);
+      }
+
+      const idBaru = produkList.length > 0 ? Math.max(...produkList.map(p => p.id)) + 1 : 1;
+
+      produkList.push({
+        id: idBaru,
+        nama: nama,
+        harga: harga,
+        hpp: hpp,
+        stok: stok,
+        gambar: fotoUrl,
+        desc: desc
+      });
+
+      e.target.reset();
+      renderProduk();
+      renderTabelStokOwner();
+
+      alert(`Sukses! Roti "${nama}" berhasil ditambahkan dari file device Anda.`);
+      switchOwnerTab('stok');
+    }
+
+    // Render Katalog Produk
+    function renderProduk() {
+      const container = document.getElementById('produk-list');
+      container.innerHTML = '';
+      produkList.forEach(p => {
+        const stokHabis = p.stok <= 0;
+        
+        container.innerHTML += `
+          <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-200/80 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="relative h-44 rounded-2xl overflow-hidden mb-4 border border-stone-100">
+                <img src="${p.gambar}" alt="${p.nama}" class="w-full h-full object-cover">
+                <span class="absolute top-2.5 right-2.5 text-[10px] font-bold ${stokHabis ? 'bg-rose-600 text-white border-rose-700' : 'bg-stone-900/80 backdrop-blur-md text-amber-300 border-stone-700'} px-2.5 py-1 rounded-full border shadow-md">
+                  ${stokHabis ? 'Stok Habis' : 'Ready: ' + p.stok + ' pcs'}
+                </span>
+              </div>
+              <h3 class="font-bold font-serif-custom text-base text-stone-900">${p.nama}</h3>
+              <p class="text-stone-500 text-xs mt-1 leading-relaxed">${p.desc}</p>
+            </div>
+            <div class="flex justify-between items-center mt-5 pt-3 border-t border-stone-100">
+              <div>
+                <span class="font-black gold-text-gradient text-lg">Rp ${p.harga.toLocaleString('id-ID')}</span>
+              </div>
+              <button onclick="tambahKeKeranjang(${p.id})" ${stokHabis ? 'disabled' : ''} 
+                class="${stokHabis ? 'bg-stone-200 text-stone-400 cursor-not-allowed' : 'gold-gradient hover:opacity-95 text-white shadow-sm'} px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                <i data-lucide="${stokHabis ? 'x-circle' : 'plus'}" class="w-3.5 h-3.5"></i> 
+                ${stokHabis ? 'Stok Habis' : 'Beli'}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function tambahKeKeranjang(id) {
+      if (!currentUser) {
+        alert("Silakan login terlebih dahulu!");
+        return;
+      }
+
+      const produk = produkList.find(p => p.id === id);
+      const itemAda = keranjang.find(item => item.id === id);
+      const qtyDiKeranjang = itemAda ? itemAda.jumlah : 0;
+
+      if (qtyDiKeranjang + 1 > produk.stok) {
+        alert(`Maaf, stok ${produk.nama} tersisa ${produk.stok} pcs saja!`);
+        return;
+      }
+
+      if (itemAda) {
+        itemAda.jumlah += 1;
+      } else {
+        keranjang.push({ ...produk, jumlah: 1 });
+      }
+      updateKeranjangDisplay();
+    }
+
+    function updateKeranjangDisplay() {
+      const cartContainer = document.getElementById('cart-items');
+      const cartCount = document.getElementById('cart-count');
+      const cartTotalQty = document.getElementById('cart-total-qty');
+      const totalPrice = document.getElementById('total-price');
+
+      if (keranjang.length === 0) {
+        cartContainer.innerHTML = `
+          <div class="text-center py-8 text-stone-400">
+            <p class="text-sm italic">Keranjang masih kosong</p>
+          </div>`;
+        cartCount.innerText = '0';
+        cartTotalQty.innerText = '0 pcs';
+        totalPrice.innerText = 'Rp 0';
+        return;
+      }
+
+      cartContainer.innerHTML = '';
+      let total = 0;
+      let totalQty = 0;
+
+      keranjang.forEach((item, index) => {
+        const subtotal = item.harga * item.jumlah;
+        total += subtotal;
+        totalQty += item.jumlah;
+
+        cartContainer.innerHTML += `
+          <div class="flex justify-between items-center text-xs bg-stone-50 p-3 rounded-2xl border border-stone-200/60">
+            <div class="flex items-center gap-2.5">
+              <img src="${item.gambar}" alt="${item.nama}" class="w-9 h-9 rounded-xl object-cover border border-stone-200">
+              <div>
+                <p class="font-bold text-stone-800">${item.nama}</p>
+                <p class="text-[11px] text-stone-500">Rp ${item.harga.toLocaleString('id-ID')} x ${item.jumlah}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-stone-900">Rp ${subtotal.toLocaleString('id-ID')}</span>
+              <button onclick="hapusItem(${index})" class="text-rose-500 hover:text-rose-700 p-1">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      cartCount.innerText = totalQty;
+      cartTotalQty.innerText = `${totalQty} pcs`;
+      totalPrice.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+      lucide.createIcons();
+    }
+
+    function hapusItem(index) {
+      keranjang.splice(index, 1);
+      updateKeranjangDisplay();
+    }
+
+    function kosongkanKeranjang() {
+      keranjang = [];
+      updateKeranjangDisplay();
+    }
+
+    function pilihMetode(metode) {
+      metodePembayaranTerpilih = metode;
+      const infoBox = document.getElementById('payment-info');
+
+      ['qris', 'transfer', 'cash'].forEach(m => {
+        const btn = document.getElementById(`btn-${m}`);
+        btn.className = "payment-btn flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs font-semibold transition gap-1 text-stone-600 border-stone-200";
+      });
+
+      const activeBtn = document.getElementById(`btn-${metode.toLowerCase()}`);
+      activeBtn.className = "payment-btn flex flex-col items-center justify-center p-2.5 rounded-xl border text-xs font-semibold transition gap-1 bg-amber-50 border-amber-500 text-amber-900 shadow-sm";
+
+      if (metode === 'QRIS') {
+        infoBox.innerHTML = `
+          <p class="font-bold mb-1">📱 Scan Kode QRIS Ayu Bakery:</p>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=AYU_BAKERY_OFFICIAL_QRIS" alt="QRIS Barcode" class="mx-auto rounded-xl border border-amber-300 p-1 bg-white my-2 shadow-sm">
+          <p class="text-[10px] text-amber-800">Mendukung Gopay, ShopeePay, OVO, Dana & Seluruh m-Banking.</p>
+        `;
+      } else if (metode === 'Transfer') {
+        infoBox.innerHTML = `
+          <p class="font-bold mb-1">🏦 Transfer Bank BCA:</p>
+          <p class="text-sm font-black text-amber-900 my-1">123-456-7890</p>
+          <p class="text-[10px] text-amber-800">a.n PT Ayu Bakery Indonesia</p>
+        `;
+      } else if (metode === 'Cash') {
+        infoBox.innerHTML = `
+          <p class="font-bold mb-1">💵 Tunai / Cash:</p>
+          <p class="text-[11px] text-amber-800 my-1">Bayar langsung secara tunai kepada kasir toko saat mengambil roti.</p>
+        `;
+      }
+    }
+
+    // Proses Pembayaran Transaksi
+    function prosesPembayaran() {
+      if (keranjang.length === 0) {
+        alert('Keranjang belanja masih kosong!');
+        return;
+      }
+
+      const jam = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      let totalOmset = 0;
+      let totalModal = 0;
+      let totalPcsTrans = 0;
+      let rincianItems = [];
+
+      keranjang.forEach(item => {
+        const subtotal = item.harga * item.jumlah;
+        const submodal = item.hpp * item.jumlah;
+        totalOmset += subtotal;
+        totalModal += submodal;
+        totalPcsTrans += item.jumlah;
+        rincianItems.push(`${item.nama} (${item.jumlah} pcs)`);
+
+        const targetProduk = produkList.find(p => p.id === item.id);
+        if (targetProduk) {
+          targetProduk.stok -= item.jumlah;
+        }
+      });
+
+      const profit = totalOmset - totalModal;
+
+      riwayatHariIni.push({
+        jam,
+        nama: currentUser,
+        phone: currentUserPhone,
+        detail: rincianItems.join(', '),
+        totalPcs: totalPcsTrans,
+        omset: totalOmset,
+        profit: profit,
+        metode: metodePembayaranTerpilih,
+      });
+
+      renderProduk();
+
+      document.getElementById('nota-nama').innerText = currentUser;
+      document.getElementById('nota-phone').innerText = currentUserPhone;
+      document.getElementById('nota-metode').innerText = metodePembayaranTerpilih;
+      document.getElementById('nota-tanggal').innerText = new Date().toLocaleString('id-ID');
+
+      const notaItemsContainer = document.getElementById('nota-items');
+      notaItemsContainer.innerHTML = '';
+      keranjang.forEach(item => {
+        notaItemsContainer.innerHTML += `
+          <div class="flex justify-between">
+            <span>${item.nama} x${item.jumlah}</span>
+            <span>Rp ${(item.harga * item.jumlah).toLocaleString('id-ID')}</span>
+          </div>
+        `;
+      });
+      document.getElementById('nota-total').innerText = `Rp ${totalOmset.toLocaleString('id-ID')}`;
+      
+      document.getElementById('nota-modal').classList.remove('hidden');
+      document.getElementById('nota-modal').classList.add('flex');
+    }
+
+    function tutupNota() {
+      document.getElementById('nota-modal').classList.add('hidden');
+      document.getElementById('nota-modal').classList.remove('flex');
+      keranjang = [];
+      updateKeranjangDisplay();
+    }
+
+    // Render Tabel Stok & Update Foto dari File
+    function renderTabelStokOwner() {
+      const tbody = document.getElementById('stok-tbody');
+      tbody.innerHTML = '';
+
+      produkList.forEach(p => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-amber-50/40 transition">
+            <td class="p-3 font-bold text-stone-800">
+              <div class="flex items-center gap-2.5">
+                <img src="${p.gambar}" alt="${p.nama}" class="w-10 h-10 rounded-xl object-cover border border-stone-200">
+                <span>${p.nama}</span>
+              </div>
+            </td>
+            <td class="p-3">
+              <input type="file" id="change-file-${p.id}" accept="image/*" class="w-36 text-[10px] text-stone-500 file:mr-1 file:py-1 file:px-2 file:rounded-md file:border-0 file:bg-stone-100 file:text-stone-700">
+            </td>
+            <td class="p-3">
+              <input type="number" id="input-hpp-${p.id}" value="${p.hpp}" class="w-20 p-1 border border-stone-300 rounded-lg text-xs font-semibold">
+            </td>
+            <td class="p-3">
+              <input type="number" id="input-harga-${p.id}" value="${p.harga}" class="w-24 p-1 border border-amber-300 bg-amber-50 font-bold text-amber-900 rounded-lg text-xs">
+            </td>
+            <td class="p-3">
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-stone-700">${p.stok} pcs</span>
+                <input type="number" id="input-stok-${p.id}" placeholder="+Stok" min="1" class="w-14 p-1 border border-stone-300 rounded-lg text-xs">
+              </div>
+            </td>
+            <td class="p-3 text-center">
+              <button onclick="simpanPerubahanOwner(${p.id})" class="bg-amber-600 hover:bg-amber-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 mx-auto shadow-sm">
+                <i data-lucide="save" class="w-3.5 h-3.5"></i> Simpan
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      lucide.createIcons();
+    }
+
+    function simpanPerubahanOwner(id) {
+      const inputHarga = parseInt(document.getElementById(`input-harga-${id}`).value);
+      const inputHpp = parseInt(document.getElementById(`input-hpp-${id}`).value);
+      const inputStok = parseInt(document.getElementById(`input-stok-${id}`).value);
+      const changeFileInput = document.getElementById(`change-file-${id}`);
+
+      if (isNaN(inputHarga) || inputHarga <= 0 || isNaN(inputHpp) || inputHpp <= 0) {
+        alert("Harga jual dan modal (HPP) harus berupa angka yang valid!");
+        return;
+      }
+
+      const produk = produkList.find(p => p.id === id);
+      if (produk) {
+        produk.harga = inputHarga;
+        produk.hpp = inputHpp;
+        
+        // Ganti foto jika ada file baru yang diunggah
+        if (changeFileInput.files && changeFileInput.files[0]) {
+          produk.gambar = URL.createObjectURL(changeFileInput.files[0]);
+        }
+
+        if (!isNaN(inputStok) && inputStok > 0) {
+          produk.stok += inputStok;
+        }
+
+        renderTabelStokOwner();
+        renderProduk();
+        alert(`Berhasil memperbarui data untuk ${produk.nama}!`);
+      }
+    }
+
+    // Update Laporan Penjualan Hari Ini
+    function updateLaporanHariIni() {
+      const tbody = document.getElementById('laporan-tbody');
+      tbody.innerHTML = '';
+
+      let grandTotalPcs = 0;
+      let grandTotalOmset = 0;
+      let grandTotalUntung = 0;
+
+      if(riwayatHariIni.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-stone-400 italic">Belum ada transaksi hari ini.</td></tr>`;
+      } else {
+        riwayatHariIni.forEach(t => {
+          grandTotalPcs += t.totalPcs;
+          grandTotalOmset += t.omset;
+          grandTotalUntung += t.profit;
+
+          tbody.innerHTML += `
+            <tr class="hover:bg-stone-50 transition">
+              <td class="p-3 font-mono text-stone-500">${t.jam}</td>
+              <td class="p-3 font-bold text-stone-800">${t.nama}</td>
+              <td class="p-3 font-mono text-stone-600">${t.phone}</td>
+              <td class="p-3 text-stone-700">${t.detail}</td>
+              <td class="p-3"><span class="bg-stone-100 text-stone-700 px-2 py-0.5 rounded border">${t.metode}</span></td>
+              <td class="p-3 font-bold text-stone-900">Rp ${t.omset.toLocaleString('id-ID')}</td>
+              <td class="p-3 font-bold text-emerald-600">+Rp ${t.profit.toLocaleString('id-ID')}</td>
+            </tr>
+          `;
+        });
+      }
+
+      document.getElementById('stat-total-pcs').innerText = `${grandTotalPcs} pcs`;
+      document.getElementById('stat-total-omset').innerText = `Rp ${grandTotalOmset.toLocaleString('id-ID')}`;
+      document.getElementById('stat-total-untung').innerText = `Rp ${grandTotalUntung.toLocaleString('id-ID')}`;
+
+      const statusRugiEl = document.getElementById('stat-status-rugi');
+      if (grandTotalPcs === 0) {
+        statusRugiEl.innerText = 'Belum Ada Transaksi';
+        statusRugiEl.className = 'text-xs font-bold text-stone-500 mt-2';
+      } else if (grandTotalPcs < 5) {
+        statusRugiEl.innerHTML = `⚠️ Potensi Belum Impas<br><span class="text-[10px] font-normal text-stone-600">Baru terjual ${grandTotalPcs} pcs.</span>`;
+        statusRugiEl.className = 'text-xs font-bold text-rose-700 mt-1';
+      } else {
+        statusRugiEl.innerHTML = `✅ Profit Optimal<br><span class="text-[10px] font-normal text-stone-600">Terjual ${grandTotalPcs} pcs hari ini.</span>`;
+        statusRugiEl.className = 'text-xs font-bold text-emerald-700 mt-1';
+      }
+    }
+
+    // Render Histori Pembeli Kemarin
+    function renderRiwayatKemarin() {
+      const tbody = document.getElementById('riwayat-kemarin-tbody');
+      tbody.innerHTML = '';
+
+      riwayatKemarin.forEach(item => {
+        tbody.innerHTML += `
+          <tr class="hover:bg-amber-50/40 transition">
+            <td class="p-3 font-mono font-bold text-amber-900">${item.tanggal}</td>
+            <td class="p-3 font-bold text-stone-800">${item.nama}</td>
+            <td class="p-3 font-mono text-stone-600">${item.phone}</td>
+            <td class="p-3 text-stone-600">${item.detail}</td>
+            <td class="p-3 font-bold">${item.totalPcs} pcs</td>
+            <td class="p-3 font-bold text-stone-900">Rp ${item.omset.toLocaleString('id-ID')}</td>
+            <td class="p-3 font-bold text-emerald-600">+Rp ${item.profit.toLocaleString('id-ID')}</td>
+          </tr>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
